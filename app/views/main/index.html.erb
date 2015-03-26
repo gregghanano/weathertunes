@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Cover Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="cover.css" rel="stylesheet">
+
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+    <style>
+    	body{
+    		background-color:#1F4B71;
+    	}
+    	.inner-cover {
+    		text-align:center;
+    		color:white;
+    	}
+    	#middle-section {
+    		display:block;
+    		background-image:url('http://i.imgur.com/vx8m6Ng.png');
+    		text-align:center;
+    		/*margin-left:10%;
+    		margin-right:10%;*/
+    		width:1130px;
+    		height: 500px;
+    	}
+    	#user_input{
+    		width: 200px;
+    		color:black;
+    	}
+    	#generate {
+    		text-align:center;
+    		border:none;
+    	}
+    	.right-box{
+    		margin:0px;
+    		float:right;
+    		margin-right:100px;
+    		color:black;
+    	}
+    	.left-box {
+    		margin:0px;
+    		display:inline-block;
+    		height:400px;
+    		float:left;
+    		margin-left:100px;
+    	}
+    </style>
+<script>
+	$(document).ready(function(){
+		$('#zipcode').on('submit', function(){
+			var url = "http://api.openweathermap.org/data/2.5/weather?q=";
+			url += $('#user_input').val();
+
+			$.get(url, function(data) {
+				console.log(data);
+				var tempF = (Math.floor((data.main.temp - 273.15)* 1.8000 + 32.00));
+				var desc = data.weather[0].description;
+				var main = data.weather[0].main;
+				var name = data.name;
+				$('#temp').html("<h3>" + name + " is " + tempF + " degrees Fahrenheit</h3>");
+				$('#desc').html("<p>Description: " + main+"</p>");
+				if (main === 'Rain'){
+					console.log('its raining!');
+					$('#user-id').val('12100207138');
+					$('#playlist-id').val('2bR4gHo1FzuPm4Fuk9tAjm');
+					$('#city-temp').val(tempF);
+					$('#description').val(main);
+					$('#city-name').val(name);
+
+				} else if (main === 'Clouds') {
+					console.log('its cloudy!');
+					$('#user-id').val('12100207138');
+					$('#playlist-id').val('66nSVNKJV15yZTuSowg0x6');
+					$('#city-temp').val(tempF);
+					$('#description').val(main);
+					$('#city-name').val(name);
+
+				} else if (main === 'Clear'){
+					if (tempF > 50){
+						console.log('its sunny!');
+						$('#user-id').val('12100207138');
+						$('#playlist-id').val('6KhHe1L4m55TikdUIcS16m');
+						$('#city-temp').val(tempF);
+						$('#description').val(main);
+						$('#city-name').val(name);
+					} else {
+						console.log('its clear but cold af');
+						$('#user-id').val('12100207138');
+						$('#playlist-id').val('6ZqGrJNzRntRE7aAW7i1V9');
+						$('#city-temp').val(tempF);
+						$('#description').val(main);
+						$('#city-name').val(name);
+					}
+					
+				} else if (main === 'Snow'){
+					console.log("its snowing!");
+					$('#user-id').val('12100207138');
+					$('#playlist-id').val('7G3ShydSJffdD10EvvEfiE');
+					$('#city-temp').val(tempF);
+					$('#description').val(main);
+					$('#city-name').val(name);
+				} else {
+					console.log("the weather is " + main);
+					$('#user-id').val('12100207138');
+					$('#playlist-id').val('6KhHe1L4m55TikdUIcS16m');
+					$('#city-temp').val(tempF);
+					$('#description').val(main);
+					$('#city-name').val(name);
+				}
+
+			})
+			return false;
+
+		});
+	});
+</script>
+</head>
+<body>
+	<div id='wrapper'>
+	<div class="inner-cover">
+	  <h1 class="cover-heading">Welcome to Weather Tunes!</h1>
+	  <p class="lead">Find the right music for your weather</p>
+	  <p class="lead">
+	    <form id='zipcode'>
+	    	<input id="user_input" type='text' name='q' placeholder='City Name, State or Country'>
+	    	<!-- <input type='hidden' name='format' value='json'> -->
+	    	<!-- <input name='authenticity_token' value='<%=form_authenticity_token %>' type='hidden'> -->
+	    	<input class="btn btn-primary btn-sm" type="submit" value="Find Weather">
+	    </form>
+	  </p>
+	</div>
+	<div id='middle-section'>
+		<form id='playlist' action='/users/spotify' method='get'>
+			<input id='user-id' type='hidden' name='user_id'>
+			<input id='playlist-id' type='hidden' name='id'>
+			<input id='city-temp' type='hidden' name='city_temp'>
+			<input id='description' type='hidden' name='desc'>
+			<input id='city-name' type='hidden' name='name'>
+			<input id='generate'type='submit' value='Generate playlist'>
+		</form>
+		<div class='right-box'>
+			<div id='temp'>
+				<% if @temp && @name %>
+					<h3><%= @name %> is <%= @temp %> degrees Fahrenheit</h3>
+				<% end %>
+			</div>
+			<div id='desc'>
+				<% if @desc %>
+					<p>Description: <%= @desc %></p>
+				<% end %>
+			</div>
+		</div>
+		<div class='left-box'>
+			<div>
+				<% if @playlist %>
+					<%= @playlist.name %><br>	
+			</div>
+			<iframe src="https://embed.spotify.com/?uri=spotify:user:12100207138:playlist:<%= @playlist.id %>" width="300" height="380" frameborder="0" allowtransparency="true"></iframe><br>
+			<% end %>
+			<a href='/'>clear</a>
+		</div>
+	</div>
+</div>
+</body>
+</html>
